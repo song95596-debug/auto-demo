@@ -12,11 +12,11 @@ jobs:
       - name: 拉取仓库代码
         uses: actions/checkout@v4
 
-      - name: 生成日志
+      - name: 追加日志记录
         run: |
           echo "任务执行时间: $(date)" >> log.txt
 
-      - name: 提交文件
+      - name: 提交并推送更新
         run: |
           git config --global user.name "github‑actions‑bot"
           git config --global user.email "actions@github.com"
