@@ -1,4 +1,4 @@
-name: 定时生成日志
+name: 定时抓取网页数据
 
 on:
   schedule:
@@ -12,17 +12,15 @@ jobs:
       - name: 拉取仓库代码
         uses: actions/checkout@v4
 
-      - name: 追加增强版日志
+      - name: 获取网页标题
         run: |
-          week=$(date +%A)
-          text_array=("坚持敲代码！" "今天也要加油！" "定时任务运行成功~" "软件工程冲冲冲！")
-          random_text=${text_array[$RANDOM % ${#text_array[@]}]}
-          echo "【ST】执行时刻: $(date) ,星期: $week ,寄语: $random_text" >> log.txt
+          page_title=$(curl -s https://www.baidu.com | grep -o '<title>.*</title>')
+          echo "【ST】抓取时刻: $(date) ,网页标题: $page_title" >> log.txt
 
       - name: 提交推送
         run: |
           git config --global user.name "github‑actions‑bot"
           git config --global user.email "actions@github.com"
           git add log.txt
-          git commit -m "增强日志更新 $(date)"
+          git commit -m "网页抓取更新 $(date)"
           git push
